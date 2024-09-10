@@ -30,7 +30,8 @@ export default function App2() {
   useEffect(() => {
     if (lastJsonMessage && lastJsonMessage.data) {
       console.log(`Got a new message:`, lastJsonMessage.data);
-      setVolume(lastJsonMessage.data.volume * 100);
+      const volume = lastJsonMessage.data.volume * 100;
+      setVolume(+volume.toFixed(0));
     }
   }, [lastJsonMessage])
   // on volume change send a message to the websocket to update the volume
