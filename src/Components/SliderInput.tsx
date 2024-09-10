@@ -2,11 +2,11 @@ import { NumberInput, Slider } from "@mantine/core";
 import classes from "./SliderInput.module.css";
 
 export default function SliderInput(props: any) {
-  function updateVolume(newValue: string | number) {
-    if (typeof newValue === "string") {
-      newValue = parseInt(newValue);
+  function updateVolume(newVolume: string | number) {
+    if (typeof newVolume === "string") {
+      newVolume = parseInt(newVolume);
     }
-    props.handleVolumeChange(newValue);
+    props.handleVolumeChange(props.label, newVolume);
   }
   
   return (
