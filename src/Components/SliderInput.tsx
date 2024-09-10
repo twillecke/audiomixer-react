@@ -1,22 +1,28 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { NumberInput, Slider } from "@mantine/core";
 import classes from "./SliderInput.module.css";
 
 export default function SliderInput(props: any) {
   const [value, setValue] = useState<number | string>(props.value);
 
-  function updateVolume(newValue: number) {
+  useEffect(() => {
+    setValue(props.value);
+  }, [props.value]);
+  function updateVolume(newValue: string | number) {
+    if (typeof newValue === "string") {
+      newValue = parseInt(newValue);
+    }
     setValue(newValue);
-    // props.updateVolume({ ...props, volume: newValue / 100 });
+    props.handleVolumeChange(newValue);
   }
   
   return (
     <div className={classes.wrapper}>
       <NumberInput
         value={value}
-        onChange={setValue}
+        onChange={updateVolume}
         label={props.label}
-        placeholder="2200 is an average value"
+        placeholder="Values from 0 to 100"
         step={1}
         min={0}
         max={100}
@@ -29,7 +35,7 @@ export default function SliderInput(props: any) {
         min={0}
         label={null}
         value={typeof value === "string" ? 0 : value}
-        onChange={setValue}
+        onChange={updateVolume}
         size={2}
         className={classes.slider}
         classNames={classes}
