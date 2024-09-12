@@ -7,14 +7,14 @@ type VolumeSettings = {
 }
 
 type VolumeSetting = {
-  key: string;
-  volume: number;
-  fader: string;
+  audioKey: string;
+  faderVolume: number;
+  group: string;
 }
 
 export default function App2() {
   const [volume, setVolume] = useState<VolumeSettings>({ bootedVolumeSettings: [] });
-  const WS_URL = "ws://127.0.0.1:8080"
+  const WS_URL = "ws://localhost:8080"
   const { sendJsonMessage, sendMessage, lastJsonMessage, readyState } = useWebSocket(
     WS_URL,
     {
@@ -42,21 +42,21 @@ export default function App2() {
   function handleVolumeChange(key: string, newVolume: number) {
     setVolume((prevState) => {
       const newVolumeSettings = prevState.bootedVolumeSettings.map((item: VolumeSetting) => {
-        if (item.key === key) {
+        if (item.audioKey === key) {
           return {
-            key: key,
-            volume: newVolume / 100,
-            fader: "UI"
+            audioKey: key,
+            faderVolume: newVolume / 100,
+            group: "UI"
           }
         }
         return item;
       })
       console.log("New Volume Settings", newVolumeSettings);
-
       sendJsonMessage({
-        type: "SET_GLOBAL_VOLUME_STATE",
+        type: "SET_VOLUME",
         data: {
-          volumeSettings: newVolumeSettings
+          key: key,
+          volume: newVolume / 100,
         }
       })
       return {
@@ -69,7 +69,7 @@ export default function App2() {
       <h1>App2</h1>
       {volume.bootedVolumeSettings.length > 0 &&
         volume.bootedVolumeSettings.map((item: VolumeSetting, index: number) => (
-          <SliderInput key={index} label={item.key} value={+(item.volume * 100).toFixed(0)} handleVolumeChange={handleVolumeChange} />
+          <SliderInput key={index} label={item.audioKey} value={+(item.faderVolume * 100).toFixed(0)} handleVolumeChange={handleVolumeChange} />
         ))
       }
     </div>
