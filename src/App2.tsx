@@ -55,8 +55,8 @@ export default function App2() {
       sendJsonMessage({
         type: "SET_VOLUME",
         data: {
-          key: key,
-          volume: newVolume / 100,
+          audioKey: key,
+          faderVolume: newVolume / 100,
         }
       })
       return {
