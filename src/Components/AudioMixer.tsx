@@ -53,7 +53,7 @@ export default function AudioMixer(updateVolume: any, volumeSettings: any) {
         console.log("AudioMixer mounted after", mixerVolumeSettings);
     }, [volumeSettings]);
     return (
-		<>
+		<div>
 			<h2>AudioMixer</h2>
 			{Object.keys(mixerVolumeSettings).map((fader) => (
 				<div key={fader}>
@@ -76,6 +76,6 @@ export default function AudioMixer(updateVolume: any, volumeSettings: any) {
 					)}
 				</div>
 			))}
-		</>
+		</div>
 	);
 }

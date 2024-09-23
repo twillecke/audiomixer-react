@@ -8,6 +8,13 @@ export default function SliderInput(props: any) {
     }
     props.handleVolumeChange(props.label, newVolume);
   }
+
+  function updateState(newVolume: string | number) {
+    if (typeof newVolume === "string") {
+      newVolume = parseInt(newVolume);
+    }
+    props.handleStateChange(props.label, newVolume);
+  }
   
   return (
     <div className={classes.wrapper}>
@@ -23,12 +30,14 @@ export default function SliderInput(props: any) {
         classNames={{ input: classes.input, label: classes.label }}
       />
       <Slider
+        onChangeEnd={updateVolume}
+        onDrag={()=>{console.log("drag")}}
         max={100}
         step={1}
         min={0}
         label={null}
         value={typeof props.value === "string" ? 0 : props.value}
-        onChange={updateVolume}
+        onChange={updateState}
         size={2}
         className={classes.slider}
         classNames={classes}

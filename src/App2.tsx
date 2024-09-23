@@ -1,6 +1,7 @@
 import useWebSocket, { ReadyState } from "react-use-websocket";
 import SliderInput from "./Components/SliderInput";
 import { useEffect, useState } from "react";
+import classes from './App2.module.css'
 
 type VolumeSettings = {
   bootedVolumeSettings: Array<VolumeSetting>;
@@ -64,14 +65,35 @@ export default function App2() {
       }
     });
   }
+
+  function handleStateChange(key: string, newVolume: number) {
+    setVolume((prevState) => {
+      const newVolumeSettings = prevState.bootedVolumeSettings.map((item: VolumeSetting) => {
+        if (item.audioKey === key) {
+          return {
+            audioKey: key,
+            faderVolume: newVolume / 100,
+            group: "UI"
+          }
+        }
+        return item;
+      })
+      return {
+        bootedVolumeSettings: newVolumeSettings
+      }
+    });
+  }
+
   return (
-    <div>
-      <h1>App2</h1>
+    <div className={classes.appBody}>
+      <h1>Audio Mixer</h1>
+      <div className={classes.mixerGrid}>
       {volume.bootedVolumeSettings.length > 0 &&
         volume.bootedVolumeSettings.map((item: VolumeSetting, index: number) => (
-          <SliderInput key={index} label={item.audioKey} value={+(item.faderVolume * 100).toFixed(0)} handleVolumeChange={handleVolumeChange} />
+          <SliderInput key={index} label={item.audioKey} value={+(item.faderVolume * 100).toFixed(0)} handleVolumeChange={handleVolumeChange} handleStateChange= {handleStateChange} />
         ))
       }
+      </div>
     </div>
   );
 }
