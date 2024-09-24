@@ -29,7 +29,7 @@ export default function App() {
     console.log("Connection state changed")
     if (readyState === ReadyState.OPEN) {
       sendMessage(
-        "Hello from App2"
+        "Client connected"
       )
     }
   }, [readyState])
@@ -46,9 +46,9 @@ export default function App() {
       const newVolumeSettings = prevState.bootedVolumeSettings.map((item: VolumeSetting) => {
         if (item.audioKey === key) {
           return {
+            ...item,
             audioKey: key,
             faderVolume: newVolume / 100,
-            group: "UI"
           }
         }
         return item;
@@ -72,9 +72,9 @@ export default function App() {
       const newVolumeSettings = prevState.bootedVolumeSettings.map((item: VolumeSetting) => {
         if (item.audioKey === key) {
           return {
+            ...item,
             audioKey: key,
             faderVolume: newVolume / 100,
-            group: "UI"
           }
         }
         return item;
