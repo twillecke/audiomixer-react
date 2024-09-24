@@ -2,6 +2,7 @@ import useWebSocket, { ReadyState } from "react-use-websocket";
 import SliderInput from "./Components/SliderInput";
 import { useEffect, useState } from "react";
 import classes from './App2.module.css'
+import { Button, Flex } from "@mantine/core";
 
 type VolumeSettings = {
   bootedVolumeSettings: Array<VolumeSetting>;
@@ -84,15 +85,35 @@ export default function App2() {
     });
   }
 
+  function handleExportClick() {
+    const fileData = JSON.stringify(volume, null, 2);
+    const blob = new Blob([fileData], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "volumeSettings.json";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
   return (
     <div className={classes.appBody}>
-      <h1>Audio Mixer</h1>
+      <Flex
+        justify={"space-between"}
+        align={"center"}
+        onClick={handleExportClick}
+      >
+        <h1>Audio Mixer</h1>
+        <Button>Export Config</Button>
+      </Flex>
+
       <div className={classes.mixerGrid}>
-      {volume.bootedVolumeSettings.length > 0 &&
-        volume.bootedVolumeSettings.map((item: VolumeSetting, index: number) => (
-          <SliderInput key={index} label={item.audioKey} value={+(item.faderVolume * 100).toFixed(0)} handleVolumeChange={handleVolumeChange} handleStateChange= {handleStateChange} />
-        ))
-      }
+        {volume.bootedVolumeSettings.length > 0 &&
+          volume.bootedVolumeSettings.map((item: VolumeSetting, index: number) => (
+            <SliderInput key={index} label={item.audioKey} value={+(item.faderVolume * 100).toFixed(0)} handleVolumeChange={handleVolumeChange} handleStateChange={handleStateChange} />
+          ))
+        }
       </div>
     </div>
   );

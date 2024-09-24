@@ -1,5 +1,7 @@
 .appBody {
   padding-inline: 2rem;
+  max-width: 1000px;
+  margin: auto;
 }
 
 .mixerGrid {
